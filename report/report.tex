@@ -13,6 +13,9 @@
 \usepackage[hidelinks]{hyperref}
 \setlist{itemsep=2pt,topsep=4pt}
 \setlength{\parskip}{4pt}
+% start every main section on a new page
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
