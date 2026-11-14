@@ -27,6 +27,8 @@
 \newtheorem{example}{Example}
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
+\theoremstyle{plain}
+\newtheorem*{ourlemma}{Lemma (ours)}
 
 \newcommand{\nlikes}{\nrightarrow}
 \newcommand{\cP}{\mathcal{P}}
@@ -206,9 +208,9 @@ For every $n=2t$ with $t\ge3$ odd, there is an instance with $n$ agents and no N
   \item[(C2)] exactly one agent that $i$ likes is on $i$'s own side, and $i\to j$. Then $i$ envies $j$ ($1\to2$).
 \end{itemize}
 
-\begin{lemma}[\textbf{ours}]
+\begin{ourlemma}
 In this instance, $i$ envies $j$ exactly when (C1) or (C2) holds.
-\end{lemma}
+\end{ourlemma}
 \begin{proof}
 If $i$ and $j$ are on the same side, swapping does not change $i$'s neighbours. Otherwise, let $k$ be the number of agents that $i$ likes on its own side. Then $u_i(\pi)=2-k$ and $u_i(\pi^{i\leftrightarrow j})=k+\mathbb{I}[i\to j]$. If $k=2$ we get $2>0$, which is (C1). If $k=1$ we get $1+\mathbb{I}[i\to j]$, which is more than $1$ exactly when $i\to j$, which is (C2). If $k=0$, $i$ already has the maximum utility $2$.
 \end{proof}
