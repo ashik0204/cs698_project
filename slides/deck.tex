@@ -698,7 +698,7 @@ Checking which case we're in just means looking at all triples: cubic time.}
 \end{enumerate}
 \vspace{3mm}
 \textbf{Run on the running example:}\\
-$s=b,\ w=a,\ t=c$. \ Who likes $c$? Only $d$, so $d$ takes $v_4$.
+$s=b,\ w=a,\ t=c$. \ Only $d$ is left, and $d$ likes $c$, so $d$ takes $v_4$.
 \column{0.42\textwidth}
 \centering
 \begin{tikzpicture}[scale=1.25]
@@ -720,7 +720,7 @@ Case 1 is solved by a simple greedy rule.
 
 Put the V on the first three seats: $s$, then $w$, then $t$. Then go round the table: for each next seat, pick an unseated agent who likes the agent in the previous seat, if possible; otherwise anyone.
 
-On our running example: $s=b$, $w=a$, $t=c$. For seat 4 we need someone who likes $c$; that's $d$. So the table is $b, a, c, d$.
+On our running example: $s=b$, $w=a$, $t=c$. For seat 4 we need an unseated agent who likes $c$. Only $d$ is left, and $d$ does like $c$. So the table is $b, a, c, d$.
 
 Utilities: $b$ sits between $a$ and $d$, likes both: 2. $a$ is next to $c$: 1, and $a$ only likes $c$, so that's its max. Same for $c$. $d$ is next to $b$ and $c$: 2. Everyone is at their maximum, so clearly NS. We verified this in code too.
 

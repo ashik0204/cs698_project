@@ -27,6 +27,7 @@
 \newtheorem{example}{Example}
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
+\newtheorem*{paperexample}{Example}
 \theoremstyle{plain}
 \newtheorem*{ourlemma}{Lemma (ours)}
 
@@ -94,7 +95,7 @@ This report is about the paper \emph{Neighborhood Stability in Assignments on Gr
 \tableofcontents
 \bigskip
 
-\noindent\textbf{What is ours.} Anything marked \textbf{[ours]} is our own work and not from the paper. Everything else is from the paper. The computer checks we mention are described in Appendix~\ref{app:verify}.
+\noindent\textbf{What is ours.} Anything marked \textbf{[ours]} is our own work and not from the paper, and so are all the connections to course topics (the ``link to the course'' paragraphs and Section~9). Everything else is from the paper. The computer checks we mention are described in Appendix~\ref{app:verify}.
 
 % =====================================================================
 \section{Introduction and motivation}
@@ -103,7 +104,7 @@ This report is about the paper \emph{Neighborhood Stability in Assignments on Gr
 
 The paper itself starts with a similar story about an organisation. The roles are fixed in advance, and members do not care which project they work on, only which colleagues they work with. The organisation wants to avoid two members who would both rather swap roles. This model was first studied by Bodlaender et al.\ (2020), and later papers by Ceylan et al., Berriaud et al.\ and Wilczynski looked at it further.
 
-\paragraph{Why a weaker notion of stability?} In hedonic games, where agents only care about who is in their group, stable outcomes often do not exist, and the same happens for seating. Berriaud et al.\ found many examples with no stable seating, even when the seats form a path or a cycle. In the related Schelling games, Bil\`o et al.\ showed that if agents can only swap with nearby agents, equilibria exist on more types of graphs. This paper uses the same idea and only rules out blocking pairs that sit next to each other. We think this makes sense for seating: to agree on a swap, two guests have to talk, and at a table you mostly talk to the people next to you, who are also the only people who affect your happiness. The paper also points out that it makes sense when agents only know where their neighbours are sitting.
+\paragraph{Why a weaker notion of stability?} In hedonic games, where agents only care about who is in their group, stable outcomes often do not exist, and the same happens for seating. Berriaud et al.\ found many examples with no stable seating, even when the seats form a path or a cycle. In the related Schelling games, Bil\`o et al.\ showed that if agents can only swap with nearby agents, equilibria exist on more types of graphs. This paper uses the same idea and only rules out blocking pairs that sit next to each other. The paper argues that this makes sense for seating: to agree on a swap, two guests have to talk, and at a table you talk to the people next to you, who are also the only people who affect your happiness. It also says the idea fits well when agents have limited information about the overall assignment.
 
 \paragraph{The question.} In the paper's words: \emph{``For which classes of seat graphs is a neighborhood stable assignment guaranteed to exist under binary preferences?''}
 
@@ -117,11 +118,11 @@ The paper itself starts with a similar story about an organisation. The roles ar
 $K_{t,t}$, $t\ge3$ odd & NS may not exist (Theorem~\ref{thm:kTT}) & -- \\
 Cycle & NS always exists (Theorem~\ref{thm:cycle}) & $O(n^3)$ \\
 Path & no blocking pair within distance 2 (Theorem~\ref{thm:path}) & $O(n^2)^{*}$ \\
-Enough leaves ($\gamma\le\#$leaves) & NS exists (Theorem~\ref{thm:dfvs}) & poly.\ if $\cP$ is a DAG \\
+Enough leaves$^{\dagger}$ & NS exists (Theorem~\ref{thm:dfvs}) & poly.\ if $\cP$ is a DAG \\
 \bottomrule
 \end{tabular}
 \end{center}
-$^{*}$The paper says $O(n^3)$; we explain in Section~\ref{sec:pathsec} why the same algorithm runs in $O(n^2)$. NS is short for \emph{neighbourhood stable}, $\gamma$ is the directed feedback vertex set (DFVS) number of the preference graph, and DAG means directed acyclic graph.
+$^{*}$The paper says $O(n^3)$; we explain in Section~\ref{sec:pathsec} why the same algorithm runs in $O(n^2)$. $^{\dagger}$The theorem asks for more leaves than $\gamma$; the proof only needs $\gamma\le\#$leaves (Section~\ref{sec:gaps}). NS is short for \emph{neighbourhood stable}, $\gamma$ is the directed feedback vertex set (DFVS) number of the preference graph, and DAG means directed acyclic graph.
 
 % =====================================================================
 \section{Model}
@@ -167,9 +168,9 @@ In $\pi=(a,d,b,c)$, we get $u_a=u_c=0$ and $u_b=u_d=1$. If $b$ and $d$ swap, we 
 
 Stable $\Rightarrow$ no blocking pair within distance $2$ (the notion used by Berriaud et al.) $\Rightarrow$ NS. The paper also notes that checking whether a stable assignment exists is hard in general, because of a known result that this is NP-complete for the exchange-stable roommates problem.
 
-\begin{example}[NS really is weaker; paper's Example 2, taken from Massand and Simon, IJCAI 2019]
+\begin{paperexample}[the paper's Example 2, taken from Massand and Simon, IJCAI 2019: NS really is weaker]
 Take two separate triangles as the seat graph, and a directed $6$-cycle $a\to b\to c\to d\to e\to f\to a$ as the preference graph. No assignment is stable: in every assignment there are two agents at different triangles who both have utility $0$, and they form a blocking pair. But every assignment is NS. Agents that sit next to each other are in the same triangle, and swapping two people within a triangle does not change anyone's neighbours. (We checked both facts for all $720$ assignments.)
-\end{example}
+\end{paperexample}
 
 \subsection{Why binary preferences}
 If preferences can take more values, things go wrong very quickly. With three non-negative values, there are four agents on a cycle with no NS assignment (the paper adapts a proof of Berriaud et al.). With values $\pm1$, the paper says that ``it is easy to construct a counterexample of neighborhood stability on a path of length three'' when the friendship graph is a cycle. \textbf{[Ours]} One example we found: three agents on a path of three seats, where each agent gives $+1$ to the next agent on a directed $3$-cycle and $-1$ to the other one. We checked that none of the six seatings is NS. Also, two non-negative values can always be turned into binary preferences, so nothing is lost by assuming binary preferences.
@@ -219,7 +220,7 @@ A blocking pair needs envy in both directions, and each direction can come from 
 
 \paragraph{Case 1: some twin pair is on the same side.}
 \begin{enumerate}
-  \item A twin pair that is split puts one agent on each side. Both sides have $t$ agents, so the twin pairs that are together have to be shared equally: \emph{$L$ and $R$ have the same number of together pairs}. So the number of agents in together pairs is even, and since $t$ is odd, at least one twin pair has to be split.
+  \item A twin pair that is split puts one agent on each side, and a twin pair that is together puts two agents on one side. So the $t$ agents on $L$ are one agent from each split pair plus two agents from each together pair on $L$, and the same holds for $R$. This means \emph{$L$ and $R$ have the same number of together pairs}, and since $t$ is odd, the number of split pairs is odd. In particular at least one twin pair is split.
   \item Going around the indices, there must be a together pair at some index $j$ followed by a split pair at $j+1$. We can rename things so that $s_{1j},s_{2j},s_{1,j+1}\in L$ and $s_{2,j+1}\in R$.
   \item Both agents that $s_{1j}$ likes are in $L$, so by (C1) it envies everyone in $R$.
   \item If some agent in $R$ had utility $0$, it would also envy $s_{1j}$ by (C1), and we would have a blocking pair. So every agent in $R$ likes someone in $L$. Now take a together pair in $R$ at index $l$. The agent $s_{1l}$ likes $s_{2l}$, which is in $R$, so $s_{1,l+1}$ has to be in $L$, and in the same way $s_{2,l+1}\in L$. So every together pair in $R$ at $l$ is followed by a together pair in $L$ at $l+1$.
@@ -231,7 +232,7 @@ A blocking pair needs envy in both directions, and each direction can come from 
 
 \paragraph{Working through $t=3$ [ours].} We found it useful to check the proof on $K_{3,3}$. If we do not care which side is called $L$, there are $10$ ways to split the six agents. In Case 1, a side cannot hold two together pairs (that would be four agents), so Case 1 always means \emph{one together pair on each side and one split pair}. There are $6$ such splits. For example, take $L=\{s_{11},s_{21},s_{12}\}$ and $R=\{s_{22},s_{13},s_{23}\}$. Twins $1$ are together and twins $2$ are split, so $j=1$, and $s_{11}$ has utility $0$. The only index left is $3=j-1$; twins $3$ are together in $R$, and $s_{13}$ has utility $1$. Swapping $s_{11}$ and $s_{13}$ takes their utilities from $0$ to $2$ and from $1$ to $2$. The other $4$ splits are in Case 2, for example $L=\{s_{11},s_{12},s_{23}\}$ and $R=\{s_{21},s_{22},s_{13}\}$, where $s_{11}$ and $s_{21}$ both go from $1$ to $2$ by swapping. For $t=3$ the row is a triangle, so any two agents in it are consecutive, which makes Case 2 easy. We also checked by brute force that none of the $720$ assignments is NS.
 
-\paragraph{Where $t$ odd is used.} Case 1 needs a split twin pair, and Case 2 needs an odd cycle. \textbf{[Ours]} For even $t$ this construction does not work. For $t=4$, putting $s_{11},s_{13},s_{22},s_{24}$ on $L$ puts every agent's twin and next agent on the other side, so everyone gets the maximum utility $2$ and the assignment is stable.
+\paragraph{Where $t$ odd is used.} Case 1 needs a split twin pair, and Case 2 needs an odd cycle. \textbf{[Ours]} For even $t$ this construction does not work. Put $s_{1j}$ on $L$ for odd $j$ and $s_{2j}$ on $L$ for even $j$ (their twins go on $R$). Then every agent's twin is on the other side, and so is its next agent, because consecutive indices alternate between odd and even (this needs $t$ even, so that $t$ and $1$ also alternate). So everyone gets the maximum utility $2$ and the assignment is stable. For $t=4$ this is $L=\{s_{11},s_{13},s_{22},s_{24}\}$.
 
 % =====================================================================
 \section{Swapping can go on forever}
@@ -302,7 +303,7 @@ Put $s,w,t$ on $v_1,v_2,v_3$. Then for $i=4,\dots,n$, put on $v_i$ an unseated a
 \paragraph{Why it works.} By the swap rule, an adjacent pair $x,y$ (with $p$ to the left of $x$) can only block if $y\to p$ and $x\nlikes p$.
 \begin{itemize}
   \item Around the V: $s\nlikes t$, so $s$ does not envy $w$, and $t\nlikes s$, so $t$ does not envy $w$. Also $s\to w$ and $t\to w$, so neither $s$ nor $t$ envies its other neighbour (Observation~2).
-  \item Everywhere else: take $x$ at $v_i$ and $y$ at $v_{i+1}$ with $i\ge4$. If $x\to p$, then $x$ does not envy $y$. If $x\nlikes p$, then at the time $x$ was picked, no unseated agent liked $p$. $y$ was still unseated then, so $y\nlikes p$, and $y$ does not envy $x$.
+  \item Everywhere else: take $x$ at $v_i$ and $y$ at $v_{i+1}$ with $4\le i\le n-1$ (the pair $v_n,v_1$ is covered by the first bullet, since $s$ does not envy $v_n$). If $x\to p$, then $x$ does not envy $y$. If $x\nlikes p$, then at the time $x$ was picked, no unseated agent liked $p$. $y$ was still unseated then, so $y\nlikes p$, and $y$ does not envy $x$.
 \end{itemize}
 So in every adjacent pair, either $x$ likes the agent on its left or $y$ does not, and that is all NS needs. Building this seating takes $O(n^2)$ time.
 
@@ -320,7 +321,7 @@ So in every adjacent pair, either $x$ likes the agent on its left or $y$ does no
   \node[font=\small\bfseries,text=Adraw] at (-0.75,1.3) {2}; \node[font=\small\bfseries,text=Adraw] at (2.05,1.3) {1};
   \node[font=\small\bfseries,text=Adraw] at (2.05,0) {1}; \node[font=\small\bfseries,text=Adraw] at (-0.75,0) {2};
 \end{tikzpicture}
-\caption{Case 1 on the running example with $s=b$, $w=a$, $t=c$; only $d$ approves $c$, so $d$ takes $v_4$. Green arrows are approvals between neighbours. Every agent attains its maximum possible utility.}
+\caption{Case 1 on the running example with $s=b$, $w=a$, $t=c$; the only unseated agent left is $d$, and $d$ approves $c$, so $d$ takes $v_4$ ($a$ also approves $c$, but $a$ is already seated). Green arrows are approvals between neighbours. Every agent attains its maximum possible utility.}
 \label{fig:case1}
 \end{figure}
 
@@ -564,8 +565,8 @@ To make sure we were reading the paper correctly, we checked the small examples 
 \begin{itemize}
   \item Running example: $b,d$ is the only adjacent blocking pair of $(a,d,b,c)$; $(a,b,d,c)$ is stable; the Case 1 output $(b,a,c,d)$ on $C_4$ is NS; $(a,c,d,b)$ on the path is stable; $(a,d,c,b)$ has the adjacent blocking pair $c,d$.
   \item Proposition~\ref{prop:loop}: the four swaps come back to $\pi$, the blocking pair is the only one at every step, and $8$ of the $24$ seatings are NS.
-  \item Theorem~\ref{thm:kTT} for $t=3$: none of the $720$ assignments on $K_{3,3}$ is NS. For $t=4$, the assignment given in the text gives every agent utility $2$.
-  \item Example~2: all $720$ assignments are NS and none is stable.
+  \item Theorem~\ref{thm:kTT} for $t=3$: none of the $720$ assignments on $K_{3,3}$ is NS. For $t=4$, the alternating assignment given in the text gives every agent utility $2$.
+  \item The paper's Example~2: all $720$ assignments are NS and none is stable.
   \item The $\pm1$ example on a path of three seats: no seating is NS.
   \item Theorem~\ref{thm:cycle} for $n=4$: each of the $4096$ preference graphs on four agents has an NS assignment on $C_4$.
   \item The five-agent instance in Section~\ref{sec:c5}: no stable seating on $C_5$; $10$ of the $24$ seatings with $a$ fixed on one seat are NS (5 if reflections count as the same).
