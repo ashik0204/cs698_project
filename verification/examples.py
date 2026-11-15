@@ -81,3 +81,31 @@ print("5-agent instance: stable seatings on C5:", sum(1 for s in seats if not bl
 LG, IG = prefs("abcd", "a>b a>c b>c b>d c>d d>a")
 print("Single-path instance b,d,a,c: blocking", ["".join("abcd"[x] for x in p) for p in blocking(LG, seat_of("bdac", IG), cyc(4))],
       "; repaired b,c,d,a: blocking", blocking(LG, seat_of("bcda", IG), cyc(4)))
+
+# ---- extra checks for claims in the report ----
+# Prop 1: uniqueness among ALL pairs (not only adjacent ones)
+seat = seat_of("abcd", I6)
+for step in range(4):
+    allbp = blocking(L6, seat, cyc(4), adjacent_only=False)
+    print("Fig6 step", step, "all blocking pairs (any distance):", nm(allbp))
+    a, b = allbp[0]; ia, ib = seat.index(a), seat.index(b); seat[ia], seat[ib] = b, a
+# Gap 1 fix: single path b->d->c->a seated around C4
+print("Gap1 fixed seating b,d,c,a: adjacent blocking", nm(blocking(L6, seat_of("bdca", I6), cyc(4))))
+# Theorem 1 for even t: alternating seating gives everyone utility 2
+for t in (4, 6, 8):
+    ag = [(r, j) for r in (1, 2) for j in range(1, t+1)]
+    Lside = {(1, j) for j in range(1, t+1) if j % 2} | {(2, j) for j in range(1, t+1) if j % 2 == 0}
+    likes = lambda a: {(3-a[0], a[1]), (a[0], a[1] % t + 1)}
+    print(f"K({t},{t}) alternating seating: utilities", sorted({sum((b in Lside) != (a in Lside) for b in likes(a)) for a in ag}))
+# Report Section 5.5: the 12 seatings of the 5-agent instance (up to rotation/reflection)
+seen = set()
+for p in itertools.permutations(range(1, 5)):
+    s5 = [0] + list(p); key = min(tuple(s5), tuple([0] + list(reversed(p))))
+    if key in seen: continue
+    seen.add(key)
+    bp = blocking(L5, s5, cyc(5), adjacent_only=False)[0]
+    ia, ib = s5.index(bp[0]), s5.index(bp[1]); d = min((ia-ib) % 5, (ib-ia) % 5)
+    sw = s5[:]; sw[ia], sw[ib] = bp[1], bp[0]
+    ns = "yes" if not blocking(L5, s5, cyc(5)) else "no"
+    print("C5", "".join("abcde"[x] for x in s5), "pair", "".join("abcde"[x] for x in bp), "dist", d,
+          f"gains {util(L5,bp[0],s5,cyc(5))}->{util(L5,bp[0],sw,cyc(5))}, {util(L5,bp[1],s5,cyc(5))}->{util(L5,bp[1],sw,cyc(5))}", "NS?", ns)
