@@ -13,9 +13,6 @@
 \usepackage[hidelinks]{hyperref}
 \setlist{itemsep=2pt,topsep=4pt}
 \setlength{\parskip}{4pt}
-% start every main section on a new page
-\let\oldsection\section
-\renewcommand{\section}{\clearpage\oldsection}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
@@ -92,8 +89,9 @@
 This report is about the paper \emph{Neighborhood Stability in Assignments on Graphs} by Aziz, Lisowski, Suzuki and Vollen. In the paper, agents are placed on the vertices of a seat graph. Each agent likes (approves) some of the other agents, and its utility is the number of liked agents sitting next to it. An assignment is \emph{neighbourhood stable} if no two agents sitting next to each other would both be better off by swapping seats. The paper shows that such an assignment does not always exist (the counterexample uses complete bipartite seat graphs), and that letting agents swap can go on forever even on a cycle of 4 seats. On the positive side, a neighbourhood stable assignment always exists on cycles and paths, and can be found in polynomial time. For general seat graphs, one exists when the seat graph has enough leaves compared with the directed feedback vertex set number of the preference graph, and it can be found in polynomial time when the preference graph has no directed cycles. We go through each result using one small running example. We also add a few observations of our own: a full description of when envy happens in the counterexample, an $O(n^2)$ running time for the path algorithm instead of $O(n^3)$, and a five-agent example showing why distance-2 stability can fail on cycles.
 \end{abstract}
 
+\clearpage
 \tableofcontents
-\bigskip
+\clearpage
 
 
 % =====================================================================
@@ -139,7 +137,6 @@ $\pi^{i\leftrightarrow j}$ is the assignment $\pi$ with $i$ and $j$ exchanging s
 An assignment $\pi$ is \emph{neighbourhood stable} (NS) if there is no blocking pair sitting on adjacent vertices.
 \end{definition}
 
-\paragraph{Connection to hedonic games.} The paper mentions that this problem is related to hedonic games, where agents are split into groups and care about who is in their group.
 
 \subsection{Running example}
 
@@ -165,7 +162,7 @@ In $\pi=(a,d,b,c)$, we get $u_a=u_c=0$ and $u_b=u_d=1$. If $b$ and $d$ swap, we 
 
 \subsection{How the notions relate}
 
-Stable $\Rightarrow$ no blocking pair within distance $2$ (the notion used by Berriaud et al.) $\Rightarrow$ NS. The paper also notes that checking whether a stable assignment exists is hard in general, because of a known result that this is NP-complete for the exchange-stable roommates problem.
+Stable $\Rightarrow$ no blocking pair within distance $2$ (the notion used by Berriaud et al.) $\Rightarrow$ NS. The paper also notes that checking whether a stable assignment exists is hard in general. This follows from a known result: for the related exchange-stable roommates problem, checking whether a stable outcome exists is NP-complete.
 
 \begin{paperexample}[the paper's Example 2, taken from Massand and Simon, IJCAI 2019: NS really is weaker]
 Take two separate triangles as the seat graph, and a directed $6$-cycle $a\to b\to c\to d\to e\to f\to a$ as the preference graph. No assignment is stable: in every assignment there are two agents at different triangles who both have utility $0$, and they form a blocking pair. But every assignment is NS. Agents that sit next to each other are in the same triangle, and swapping two people within a triangle does not change anyone's neighbours.
@@ -380,7 +377,7 @@ Let the blocking pair be $x,y$ at $v_i,v_{i+1}$, with $p$ at $v_{i-1}$ and $z$ a
 \label{fig:repair}
 \end{figure}
 
-\paragraph{Type II: $x=\mathrm{tail}(P_r)$ and $y=\mathrm{head}(P_{r+1})$.} The swap rule needs $y\nlikes z$. If $|P_{r+1}|\ge2$, then $y$ likes the next agent $z$, so $P_{r+1}$ must be just $\{y\}$ and $z=\mathrm{head}(P_{r+2})$. The rule also needs $x\to z$, that is $\mathrm{tail}(P_r)\to\mathrm{head}(P_{r+2})$, which goes against minimality. So, according to the paper, Type II cannot happen.
+\paragraph{Type II: $x=\mathrm{tail}(P_r)$ and $y=\mathrm{head}(P_{r+1})$.} The swap rule needs $y\nlikes z$. If $|P_{r+1}|\ge2$, then $y$ likes the next agent $z$, so $P_{r+1}$ must be just $\{y\}$ and $z=\mathrm{head}(P_{r+2})$. The rule also needs $x\to z$, that is $\mathrm{tail}(P_r)\to\mathrm{head}(P_{r+2})$, which goes against minimality. So Type II cannot happen.
 
 \paragraph{Why it stops, and how long it takes.} $R$ is at most $n$ and goes up with every use of Lemma~\ref{lem:repair}, so there are at most $n$ repairs, and at the end there is no adjacent blocking pair. The paper says each repair takes $O(n^2)$ time but does not explain it. This is how we understand it: finding an adjacent blocking pair takes $O(n)$ (four look-ups per pair using the swap rule); the insertion in Claim~\ref{cl:insert} walks back along one path in $O(n)$; joining lists takes $O(n)$; and making the partition minimal again means checking tail--head pairs, at most $O(k^2)=O(n^2)$, where each join only creates one new tail and head to recheck. In total:
 \begin{center}
@@ -497,7 +494,7 @@ The proof only needs a DFVS that fits on the leaves, i.e.\ $\gamma\le\#$leaves.
 % =====================================================================
 \section{Open questions and conclusion}
 
-The paper lists these directions for future work: other seat graphs like grids and trees, and more conditions like Theorem~\ref{thm:dfvs}; efficiency, i.e.\ how much welfare is lost by requiring NS (the ``price of neighbourhood stability''), or finding the best welfare among NS assignments; and preferences that are not binary, where cycles already fail with cardinal values and paths are still open.
+The paper lists these directions for future work: other seat graphs like grids and trees, and more conditions like Theorem~\ref{thm:dfvs}; efficiency, i.e.\ how much welfare is lost by requiring NS (the ``price of neighborhood stability''), or finding the best welfare among NS assignments; and preferences that are not binary, where cycles already fail with cardinal values and paths are still open.
 
 To sum up, only letting neighbours swap turns a notion that often fails into one that always works on cycles and paths, although it can still fail on seat graphs like $K_{t,t}$. The idea we liked most is laying out path partitions of the preference graph around the cycle and fixing blocking pairs by joining paths. It gives a polynomial algorithm even though the natural swapping process can loop forever.
 
