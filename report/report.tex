@@ -13,6 +13,14 @@
 \usepackage[hidelinks]{hyperref}
 \setlist{itemsep=2pt,topsep=4pt}
 \setlength{\parskip}{4pt}
+% never leave a single line of a paragraph alone at the top or bottom of a page
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+% start a new page if fewer than #1 of vertical space is left (same as the needspace package)
+\makeatletter
+\newcommand{\needspace}[1]{\par\penalty-100\begingroup\setlength{\dimen@}{#1}\dimen@ii\pagegoal\advance\dimen@ii-\pagetotal\ifdim\dimen@>\dimen@ii\ifdim\dimen@ii>\z@\vfil\fi\penalty-\@M\fi\endgroup}
+\makeatother
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
@@ -214,6 +222,7 @@ If $i$ and $j$ are on the same side, swapping does not change $i$'s neighbours. 
 
 A blocking pair needs envy in both directions, and each direction can come from either condition. Agents on opposite sides are always adjacent, so any blocking pair across the two sides breaks NS. The proof has two cases.
 
+\needspace{6\baselineskip}
 \paragraph{Case 1: some twin pair is on the same side.}
 \begin{enumerate}
   \item A twin pair that is split puts one agent on each side, and a twin pair that is together puts two agents on one side. So the $t$ agents on $L$ are one agent from each split pair plus two agents from each together pair on $L$, and the same holds for $R$. This means \emph{$L$ and $R$ have the same number of together pairs}, and since $t$ is odd, the number of split pairs is odd. In particular at least one twin pair is split.
@@ -403,7 +412,10 @@ On paths, the paper gets the stronger result of no blocking pair within distance
 \[
 a\to c,e;\quad b\to a,e;\quad c\to a,d;\quad d\to b,c;\quad e\to b,d,
 \]
-which is the mutual pairs $a\leftrightarrow c$, $c\leftrightarrow d$, $b\leftrightarrow e$ plus the directed $4$-cycle $a\to e\to d\to b\to a$. If we count rotations and reflections as the same, there are $12$ seatings, and every one of them has a blocking pair:
+which is the mutual pairs $a\leftrightarrow c$, $c\leftrightarrow d$, $b\leftrightarrow e$ plus the directed $4$-cycle $a\to e\to d\to b\to a$.
+
+\needspace{17\baselineskip}
+\noindent If we count rotations and reflections as the same, there are $12$ seatings, and every one of them has a blocking pair:
 \begin{center}
 \small
 \begin{tabular}{@{}lcclc@{}}
