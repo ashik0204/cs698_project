@@ -89,7 +89,7 @@
 \maketitle
 
 \begin{abstract}
-This report is about the paper \emph{Neighborhood Stability in Assignments on Graphs} by Aziz, Lisowski, Suzuki and Vollen. In the paper, agents are placed on the vertices of a seat graph. Each agent likes (approves) some of the other agents, and its utility is the number of liked agents sitting next to it. An assignment is \emph{neighbourhood stable} if no two agents sitting next to each other would both be better off by swapping seats. The paper shows that such an assignment does not always exist (the counterexample uses complete bipartite seat graphs), and that letting agents swap can go on forever even on a cycle of 4 seats. On the positive side, a neighbourhood stable assignment always exists on cycles and paths, and can be found in polynomial time. For general seat graphs, one exists when the seat graph has enough leaves compared with the directed feedback vertex set number of the preference graph, and it can be found in polynomial time when the preference graph has no directed cycles. We go through each result using one small running example and connect the paper to topics from our course (potential games, the finite improvement property, PLS, colouring games and hedonic games). We also add a few observations of our own: a full description of when envy happens in the counterexample, an $O(n^2)$ running time for the path algorithm instead of $O(n^3)$, and a five-agent example showing why distance-2 stability can fail on cycles.
+This report is about the paper \emph{Neighborhood Stability in Assignments on Graphs} by Aziz, Lisowski, Suzuki and Vollen. In the paper, agents are placed on the vertices of a seat graph. Each agent likes (approves) some of the other agents, and its utility is the number of liked agents sitting next to it. An assignment is \emph{neighbourhood stable} if no two agents sitting next to each other would both be better off by swapping seats. The paper shows that such an assignment does not always exist (the counterexample uses complete bipartite seat graphs), and that letting agents swap can go on forever even on a cycle of 4 seats. On the positive side, a neighbourhood stable assignment always exists on cycles and paths, and can be found in polynomial time. For general seat graphs, one exists when the seat graph has enough leaves compared with the directed feedback vertex set number of the preference graph, and it can be found in polynomial time when the preference graph has no directed cycles. We go through each result using one small running example. We also add a few observations of our own: a full description of when envy happens in the counterexample, an $O(n^2)$ running time for the path algorithm instead of $O(n^3)$, and a five-agent example showing why distance-2 stability can fail on cycles.
 \end{abstract}
 
 \tableofcontents
@@ -139,7 +139,7 @@ $\pi^{i\leftrightarrow j}$ is the assignment $\pi$ with $i$ and $j$ exchanging s
 An assignment $\pi$ is \emph{neighbourhood stable} (NS) if there is no blocking pair sitting on adjacent vertices.
 \end{definition}
 
-\paragraph{Connection to hedonic games.} The paper mentions that this problem is related to hedonic games, where agents are split into groups and care about who is in their group. The way we see it, the utility looks like an additively separable hedonic game with $0/1$ values, except that the ``group'' of an agent is its set of neighbours in the seat graph and not a part of a partition.
+\paragraph{Connection to hedonic games.} The paper mentions that this problem is related to hedonic games, where agents are split into groups and care about who is in their group.
 
 \subsection{Running example}
 
@@ -168,11 +168,11 @@ In $\pi=(a,d,b,c)$, we get $u_a=u_c=0$ and $u_b=u_d=1$. If $b$ and $d$ swap, we 
 Stable $\Rightarrow$ no blocking pair within distance $2$ (the notion used by Berriaud et al.) $\Rightarrow$ NS. The paper also notes that checking whether a stable assignment exists is hard in general, because of a known result that this is NP-complete for the exchange-stable roommates problem.
 
 \begin{paperexample}[the paper's Example 2, taken from Massand and Simon, IJCAI 2019: NS really is weaker]
-Take two separate triangles as the seat graph, and a directed $6$-cycle $a\to b\to c\to d\to e\to f\to a$ as the preference graph. No assignment is stable: in every assignment there are two agents at different triangles who both have utility $0$, and they form a blocking pair. But every assignment is NS. Agents that sit next to each other are in the same triangle, and swapping two people within a triangle does not change anyone's neighbours. (We checked both facts for all $720$ assignments.)
+Take two separate triangles as the seat graph, and a directed $6$-cycle $a\to b\to c\to d\to e\to f\to a$ as the preference graph. No assignment is stable: in every assignment there are two agents at different triangles who both have utility $0$, and they form a blocking pair. But every assignment is NS. Agents that sit next to each other are in the same triangle, and swapping two people within a triangle does not change anyone's neighbours.
 \end{paperexample}
 
 \subsection{Why binary preferences}
-If preferences can take more values, things go wrong very quickly. With three non-negative values, there are four agents on a cycle with no NS assignment (the paper adapts a proof of Berriaud et al.). With values $\pm1$, the paper says that ``it is easy to construct a counterexample of neighborhood stability on a path of length three'' when the friendship graph is a cycle. One example we found: three agents on a path of three seats, where each agent gives $+1$ to the next agent on a directed $3$-cycle and $-1$ to the other one. We checked that none of the six seatings is NS. Also, two non-negative values can always be turned into binary preferences, so nothing is lost by assuming binary preferences.
+If preferences can take more values, things go wrong very quickly. With three non-negative values, there are four agents on a cycle with no NS assignment (the paper adapts a proof of Berriaud et al.). With values $\pm1$, the paper says that ``it is easy to construct a counterexample of neighborhood stability on a path of length three'' when the friendship graph is a cycle. For example, take three agents on a path of three seats, where each agent gives $+1$ to the next agent on a directed $3$-cycle and $-1$ to the other one; none of the six seatings is NS. Also, two non-negative values can always be turned into binary preferences, so nothing is lost by assuming binary preferences.
 
 % =====================================================================
 \section{NS assignments do not always exist}
@@ -229,7 +229,7 @@ A blocking pair needs envy in both directions, and each direction can come from 
 
 \paragraph{Case 2: every twin pair is split.} Then $L$ has exactly one agent from every twin pair, so at least $\lceil t/2\rceil$ of its agents come from the same row, say the top row. These agents are on the directed $t$-cycle $s_{11}\to\dots\to s_{1t}\to s_{11}$. Since $t$ is odd, the largest set of agents on this cycle with no two next to each other has size $\lfloor t/2\rfloor<\lceil t/2\rceil$. So two consecutive top agents, say $s_{11},s_{12}$, are both in $L$, and their twins $s_{21},s_{22}$ are in $R$. Now $s_{11}$ likes $s_{12}$ (own side) and $s_{21}$ (other side), and $s_{21}$ likes $s_{22}$ (own side) and $s_{11}$ (other side). By (C2) they envy each other.
 
-\paragraph{Working through $t=3$.} We found it useful to check the proof on $K_{3,3}$. If we do not care which side is called $L$, there are $10$ ways to split the six agents. In Case 1, a side cannot hold two together pairs (that would be four agents), so Case 1 always means \emph{one together pair on each side and one split pair}. There are $6$ such splits. For example, take $L=\{s_{11},s_{21},s_{12}\}$ and $R=\{s_{22},s_{13},s_{23}\}$. Twins $1$ are together and twins $2$ are split, so $j=1$, and $s_{11}$ has utility $0$. The only index left is $3=j-1$; twins $3$ are together in $R$, and $s_{13}$ has utility $1$. Swapping $s_{11}$ and $s_{13}$ takes their utilities from $0$ to $2$ and from $1$ to $2$. The other $4$ splits are in Case 2, for example $L=\{s_{11},s_{12},s_{23}\}$ and $R=\{s_{21},s_{22},s_{13}\}$, where $s_{11}$ and $s_{21}$ both go from $1$ to $2$ by swapping. For $t=3$ the row is a triangle, so any two agents in it are consecutive, which makes Case 2 easy. We also checked by brute force that none of the $720$ assignments is NS.
+\paragraph{Working through $t=3$.} It helps to see the proof on $K_{3,3}$. If we do not care which side is called $L$, there are $10$ ways to split the six agents. In Case 1, a side cannot hold two together pairs (that would be four agents), so Case 1 always means \emph{one together pair on each side and one split pair}. There are $6$ such splits. For example, take $L=\{s_{11},s_{21},s_{12}\}$ and $R=\{s_{22},s_{13},s_{23}\}$. Twins $1$ are together and twins $2$ are split, so $j=1$, and $s_{11}$ has utility $0$. The only index left is $3=j-1$; twins $3$ are together in $R$, and $s_{13}$ has utility $1$. Swapping $s_{11}$ and $s_{13}$ takes their utilities from $0$ to $2$ and from $1$ to $2$. The other $4$ splits are in Case 2, for example $L=\{s_{11},s_{12},s_{23}\}$ and $R=\{s_{21},s_{22},s_{13}\}$, where $s_{11}$ and $s_{21}$ both go from $1$ to $2$ by swapping. For $t=3$ the row is a triangle, so any two agents in it are consecutive, which makes Case 2 easy.
 
 \paragraph{Where $t$ odd is used.} Case 1 needs a split twin pair, and Case 2 needs an odd cycle. For even $t$ this construction does not work. Put $s_{1j}$ on $L$ for odd $j$ and $s_{2j}$ on $L$ for even $j$ (their twins go on $R$). Then every agent's twin is on the other side, and so is its next agent, because consecutive indices alternate between odd and even (this needs $t$ even, so that $t$ and $1$ also alternate). So everyone gets the maximum utility $2$ and the assignment is stable. For $t=4$ this is $L=\{s_{11},s_{13},s_{22},s_{24}\}$.
 
@@ -260,12 +260,7 @@ The instance (the paper's Fig.~6) has $c\to a$, $a\to b$, $a\to d$, $b\to d$, $d
 \label{fig:loop}
 \end{figure}
 
-\paragraph{What this means, and links to the course.}
-\begin{itemize}
-  \item The four swaps form an \emph{improvement cycle}. From the course, a finite game has the finite improvement property (FIP) exactly when it has a generalised ordinal potential (Monderer and Shapley). If we think of each blocking swap as a ``move'', this means there is no function that goes up with every blocking swap on cycles.
-  \item Since the blocking pair is the only one at every step, \emph{every} sequence of swaps from $\pi$ goes around in a loop. So the dynamics is not even weakly acyclic.
-  \item Still, this instance does have NS assignments (we counted 8 of the 24 seatings). So to show existence on cycles we need an actual construction, and that is what Theorem~\ref{thm:cycle} gives.
-\end{itemize}
+\paragraph{What this means.} Since the blocking pair is the only one at every step, \emph{every} sequence of swaps from $\pi$ goes around in a loop, so no function can go up with every blocking swap here. Still, this instance does have NS assignments (8 of the 24 seatings are NS). So to show existence on cycles we need an actual construction, and that is what Theorem~\ref{thm:cycle} gives.
 
 \paragraph{When swapping does stop.} The paper mentions that symmetric preferences ($i\to j$ exactly when $j\to i$) guarantee NS, similar to an argument of Bullinger and Suksompong. Here is a short potential argument for this. Let $F(\pi)$ be the number of seat edges whose two endpoints like each other. With symmetric preferences, $u_i(\pi)$ is the number of such edges at $i$'s seat. When $i$ and $j$ swap, only the edges at their two seats can change, and the edge between them (if there is one) still has the same two agents on it. So $F(\pi^{i\leftrightarrow j})-F(\pi)=\Delta u_i+\Delta u_j>0$ for every blocking swap, whether or not $i$ and $j$ are adjacent. Since $F\le|E|$, swap dynamics stops at an NS assignment. If non-adjacent blocking pairs are also allowed to swap, it stops at a \emph{stable} assignment.
 
@@ -404,11 +399,10 @@ The case check, done by looking at triples as described, really can take about $
 
 \paragraph{Back to Proposition~\ref{prop:loop}.} The looping instance is in Case 2. If the first maximal path the algorithm finds is $c\to a\to b\to d$ (it contains every agent, and $d\to c$), then around the cycle every agent likes its right neighbour ($R=4$), and the seating is NS straight away, even though swap dynamics from $\pi$ never reaches an NS assignment.
 
-\paragraph{Link to the course.} $R$ works like a progress measure, similar to the energy function for Hopfield networks. The difference from the potentials in PLS (Polynomial Local Search) problems is that $R$ can only take $n+1$ values, so the number of steps is polynomial. Also, these steps are changes made by the algorithm, not swaps made by the agents.
 
 \subsection{Why distance-2 stability fails on cycles}\label{sec:c5}
 
-On paths, the paper gets the stronger result of no blocking pair within distance $2$ (Theorem~\ref{thm:path}). On cycles this is not possible because of the five-agent instance of Berriaud et al. The paper does not give their instance, so we looked for one ourselves with a computer search. On $C_5$, any two seats are at distance $1$ or $2$, so here distance-2 stability is the same as stability. Our instance is
+On paths, the paper gets the stronger result of no blocking pair within distance $2$ (Theorem~\ref{thm:path}). On cycles this is not possible because of the five-agent instance of Berriaud et al. The paper does not give their instance, so here is one we found. On $C_5$, any two seats are at distance $1$ or $2$, so here distance-2 stability is the same as stability. Our instance is
 \[
 a\to c,e;\quad b\to a,e;\quad c\to a,d;\quad d\to b,c;\quad e\to b,d,
 \]
@@ -468,7 +462,7 @@ If the seat graph is a path, an assignment with no blocking pair within distance
 \label{fig:path}
 \end{figure}
 
-\paragraph{Background and link to the course.} Berriaud et al.\ showed with a potential argument that swap dynamics on paths always reaches an assignment with no blocking pair within distance $2$. They also gave evidence that this can take exponentially many steps, and asked whether such an assignment can be found in polynomial time. This is like the PLS situation we saw in class: the improvements have to stop at some point, but it might take exponentially long. The paper answers their question with a direct construction instead of running the dynamics.
+\paragraph{Background.} Berriaud et al.\ showed with a potential argument that swap dynamics on paths always reaches an assignment with no blocking pair within distance $2$. They also gave evidence that this can take exponentially many steps, and asked whether such an assignment can be found in polynomial time. The paper answers their question with a direct construction instead of running the dynamics.
 
 % =====================================================================
 \section{A condition for general seat graphs}
@@ -497,59 +491,17 @@ The proof only needs a DFVS that fits on the leaves, i.e.\ $\gamma\le\#$leaves.
 
 \paragraph{Consequence.} Using a result of Borodin, the paper notes that planar directed graphs have DFVS number at most $\tfrac35n$. So for planar preference graphs, an NS assignment exists on every seat graph where at least $60\%$ of the vertices are leaves, for example full $m$-ary trees with $m\ge3$, which have at least $\frac{m-1}{m}n$ leaves.
 
-\paragraph{Link to the course.} This is very similar to the existence argument for colouring games on DAGs: the agents choose in reverse topological order, sinks first, so no later choice can make an earlier one worse. One difference is that here the DAG is the \emph{preference} graph, while in Theorem~\ref{thm:cycle} the cycle is the \emph{seat} graph.
 
 % =====================================================================
 % =====================================================================
-\section{Links to the course}
-
-\begin{center}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}p{4.6cm}p{10cm}@{}}
-\toprule
-\textbf{Course topic} & \textbf{Where it shows up} \\
-\midrule
-Hedonic games & The utility is additively separable with 0/1 values, but over the seat neighbourhood instead of a coalition. \\
-Potential games, FIP, generalised ordinal potentials & Proposition~\ref{prop:loop} is an improvement cycle, so there is no potential for swap dynamics on cycles. With symmetric preferences, the number of adjacent pairs who like each other is a potential. \\
-Weakly acyclic games & From the starting assignment of Proposition~\ref{prop:loop}, every improvement path loops. \\
-Hopfield networks, progress measures & The count $R$ in Lemma~\ref{lem:repair} goes up with each repair and has at most $n+1$ values. \\
-PLS & On paths, swap dynamics stops but maybe only after exponentially many steps; Theorem~\ref{thm:path} builds the outcome directly. \\
-Colouring games on DAGs & Theorem~\ref{thm:dfvs} lets sinks choose first, like the existence proof for DAGs. \\
-\bottomrule
-\end{tabular}
-\end{center}
-
 % =====================================================================
 \section{Open questions and conclusion}
 
 The paper lists these directions for future work: other seat graphs like grids and trees, and more conditions like Theorem~\ref{thm:dfvs}; efficiency, i.e.\ how much welfare is lost by requiring NS (the ``price of neighbourhood stability''), or finding the best welfare among NS assignments; and preferences that are not binary, where cycles already fail with cardinal values and paths are still open.
 
-To sum up, only letting neighbours swap turns a notion that often fails into one that always works on cycles and paths, although it can still fail on seat graphs like $K_{t,t}$. The idea we liked most is laying out path partitions of the preference graph around the cycle and fixing blocking pairs by joining paths. It gives a polynomial algorithm even though the natural swapping process can loop forever. Our checks agree with all the results in the paper.
+To sum up, only letting neighbours swap turns a notion that often fails into one that always works on cycles and paths, although it can still fail on seat graphs like $K_{t,t}$. The idea we liked most is laying out path partitions of the preference graph around the cycle and fixing blocking pairs by joining paths. It gives a polynomial algorithm even though the natural swapping process can loop forever.
 
 % =====================================================================
-\appendix
-\section{Computer checks}\label{app:verify}
-
-To make sure we were reading the paper correctly, we checked the small examples and our own claims with short Python programs that we wrote for this report. The programs store the agents, seat graphs and likes directly, and compute utilities and blocking pairs straight from the definitions in Section~2.
-
-\paragraph{Exhaustive checks.}
-\begin{itemize}
-  \item Running example: $b,d$ is the only adjacent blocking pair of $(a,d,b,c)$; $(a,b,d,c)$ is stable; the Case 1 output $(b,a,c,d)$ on $C_4$ is NS; $(a,c,d,b)$ on the path is stable; $(a,d,c,b)$ has the adjacent blocking pair $c,d$.
-  \item Proposition~\ref{prop:loop}: the four swaps come back to $\pi$, the blocking pair is the only one at every step, and $8$ of the $24$ seatings are NS.
-  \item Theorem~\ref{thm:kTT} for $t=3$: none of the $720$ assignments on $K_{3,3}$ is NS. For $t=4$, the alternating assignment given in the text gives every agent utility $2$.
-  \item The paper's Example~2: all $720$ assignments are NS and none is stable.
-  \item The $\pm1$ example on a path of three seats: no seating is NS.
-  \item Theorem~\ref{thm:cycle} for $n=4$: each of the $4096$ preference graphs on four agents has an NS assignment on $C_4$.
-  \item The five-agent instance in Section~\ref{sec:c5}: no stable seating on $C_5$; $10$ of the $24$ seatings with $a$ fixed on one seat are NS (5 if reflections count as the same).
-\end{itemize}
-
-\paragraph{Random checks.}
-\begin{itemize}
-  \item Theorem~\ref{thm:path}: $20{,}000$ random instances with $3$ to $8$ agents; the greedy output never had a blocking pair within distance $2$.
-\end{itemize}
-
-These checks support the results but they are not proofs; for bigger instances we rely on the arguments in the text.
-
 % =====================================================================
 \begin{thebibliography}{9}\small
 \bibitem{main} H.~Aziz, G.~Lisowski, M.~Suzuki and J.~Vollen. Neighborhood stability in assignments on graphs. arXiv:2407.05240, 2024.
@@ -559,8 +511,6 @@ These checks support the results but they are not proofs; for bigger instances w
 \bibitem{bullinger} M.~Bullinger and W.~Suksompong. Topological distance games. Theoretical Computer Science 981, 2024.
 \bibitem{massand} S.~Massand and S.~Simon. Graphical one-sided markets. IJCAI 2019.
 \bibitem{borodin} O.~V.~Borodin. On acyclic colorings of planar graphs. Discrete Mathematics 25(3), 1979.
-\bibitem{monderer} D.~Monderer and L.~S.~Shapley. Potential games. Games and Economic Behavior 14(1), 1996.
-\bibitem{karp} R.~M.~Karp. Reducibility among combinatorial problems. In Complexity of Computer Computations, 1972.
 \end{thebibliography}
 
 \end{document}

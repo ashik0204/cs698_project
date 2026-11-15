@@ -19,7 +19,7 @@ Agents are seated on the vertices of a graph. Each agent approves some others, a
 | [`report/`](report) | The written report ([`report.pdf`](report/report.pdf)) and its LaTeX source. |
 | [`verification/`](verification) | Python scripts that check the examples and claims used in the slides and report. |
 
-The report explains every result of the paper with a single running example, connects it to course topics (potential games and the finite improvement property, PLS, colouring games on DAGs, hedonic games), and adds a few observations of our own:
+The report explains every result of the paper with a single running example and adds a few observations of our own:
 
 - an exact characterisation of envy in the paper's counterexample (Theorem 1),
 - a tighter `O(n^2)` running time for the path algorithm (Theorem 3),
