@@ -19,12 +19,11 @@ Agents are seated on the vertices of a graph. Each agent approves some others, a
 | [`report/`](report) | The written report ([`report.pdf`](report/report.pdf)) and its LaTeX source. |
 | [`verification/`](verification) | Python scripts that check the examples and claims used in the slides and report. |
 
-The report explains every result of the paper with a single running example, connects it to course topics (potential games and the finite improvement property, PLS, colouring games on DAGs, hedonic games), and adds our own observations, marked **[ours]** in the text:
+The report explains every result of the paper with a single running example, connects it to course topics (potential games and the finite improvement property, PLS, colouring games on DAGs, hedonic games), and adds a few observations of our own:
 
 - an exact characterisation of envy in the paper's counterexample (Theorem 1),
 - a tighter `O(n^2)` running time for the path algorithm (Theorem 3),
-- a five-agent instance showing why distance-2 stability fails on cycles,
-- two boundary cases (exactly one or two paths) not covered by the written proof of the main lemma for cycles, with patches checked computationally.
+- a five-agent instance showing why distance-2 stability fails on cycles.
 
 ## Building
 
@@ -41,7 +40,7 @@ Python 3, standard library only.
 
 ```sh
 python3 verification/examples.py     # exhaustive checks of all small examples
-python3 verification/algorithm1.py   # Algorithm 1 (cycles) with patches, 60,000 random instances
+python3 verification/algorithm1.py   # Algorithm 1 (cycles) on 60,000 random instances
 ```
 
-`examples.py` checks the running example, the swap cycle of Proposition 1, the `K(3,3)` counterexample, the two-triangle example, every preference graph on four agents, the path algorithm on random instances, and the examples discussed in the report. `algorithm1.py` implements the cycle algorithm as written in the paper, asserts the properties used in its proof at every step, and reports how often each repair case occurs.
+`examples.py` checks the running example, the swap cycle of Proposition 1, the `K(3,3)` counterexample, the two-triangle example, every preference graph on four agents, the path algorithm on random instances, and the examples discussed in the report. `algorithm1.py` implements the cycle algorithm and runs it on random instances, checking that every output is neighbourhood stable.
